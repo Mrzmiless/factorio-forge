@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Factorio Forge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="titlebar">
+    <span class="title">Factorio Forge</span>
+    <button id="min-btn"><img src="icons/minimize.svg" alt="-"></button>
+    <button id="max-btn"><img src="icons/maximize.svg" alt="[]"></button>
+    <button id="close-btn"><img src="icons/close.svg" alt="X"></button>
+  </div>
+  <div class="app-shell">
+    <nav class="sidebar">
+      <ul>
+        <li>
+          <a href="#" data-page="instances" class="active"><img src="icons/instances.svg">Instâncias</a>
+          <ul class="submenu">
+            <li><a href="#" id="create-submenu">Criar instância</a></li>
+          </ul>
+        </li>
+        <li><a href="#" data-page="versions"><img src="icons/versions.svg">Versões</a></li>
+        <li><a href="#" data-page="settings"><img src="icons/settings.svg">Configuração</a></li>
+        <li><a href="#" data-page="about"><img src="icons/about.svg">Sobre</a></li>
+      </ul>
+    </nav>
+    <main class="main-content">
+      <div id="page-instances" class="page">
+        <h2>Instâncias</h2>
+        <div id="instance-list"></div>
+      </div>
+      <div id="page-versions" class="page" style="display:none">
+        <h2>Versões</h2>
+        <select id="version-select"></select>
+        <button id="import-version">Importar versão</button>
+      </div>
+      <div id="page-settings" class="page" style="display:none">
+        <h2>Configuração</h2>
+        <div class="settings-row">
+          <label for="factorio-path" class="settings-label">Caminho do Factorio</label>
+          <div class="settings-path">
+            <input type="text" id="factorio-path" placeholder="C:\\Program Files\\Factorio\\bin\\x64\\factorio.exe" />
+            <button id="browse-path">Procurar...</button>
+          </div>
+          <div class="settings-footer">
+            <span id="factorio-status" class="status-badge status-unknown">A detectar...</span>
+            <button id="save-path">Guardar</button>
+          </div>
+        </div>
+      </div>
+      <div id="page-about" class="page" style="display:none">
+        <h2>Sobre</h2>
+        <p>Factorio Forge launcher<br/>Versão 0.1.0</p>
+        <p>Desenvolvido como PAP por ...</p>
+      </div>
+    </main>
+  </div>
+  <div id="modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <span id="modal-close" class="modal-close">&times;</span>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+  <div id="toast-container" class="toast-container"></div>
+  <script src="renderer.js"></script>
+</body>
+</html>

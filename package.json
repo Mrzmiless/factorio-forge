@@ -1,0 +1,57 @@
+{
+  "name": "factorio-forge",
+  "version": "0.1.0",
+  "description": "Launcher desktop para Factorio com instâncias isoladas",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "start": "npm run build && electron .",
+    "build": "tsc && node copy-renderer-assets.js && vite build",
+    "dev": "tsc -w",
+    "copy-assets": "node copy-assets.js",
+    "package": "electron-builder"
+  },
+  "author": "",
+  "license": "MIT",
+  "build": {
+    "appId": "com.mrzmiless.factorioforge",
+    "productName": "Factorio Forge",
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Mrzmiless",
+        "repo": "factorio-forge"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/archiver": "^7.0.0",
+    "@types/discord-rpc": "^4.0.10",
+    "@vitejs/plugin-react": "^5.1.4",
+    "electron": "^26.0.0",
+    "electron-builder": "^24.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "discord-rpc": "^4.0.1",
+    "electron-updater": "^6.8.3",
+    "extract-zip": "^2.0.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}
