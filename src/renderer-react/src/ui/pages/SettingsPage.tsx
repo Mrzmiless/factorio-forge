@@ -8,6 +8,7 @@ export function SettingsPage() {
   const [factorioOk, setFactorioOk] = useState<boolean | null>(null);
   const [rpcEnabled, setRpcEnabled] = useState<boolean>(false);
   const [updateState, setUpdateState] = useState<any>({ status: 'idle' });
+  const [confirmClearData, setConfirmClearData] = useState(false);
 
   async function refreshFactorio() {
     const validate = await ipcInvoke<{ path: string; exists: boolean }>('validate-factorio-path');
@@ -183,11 +184,7 @@ export function SettingsPage() {
               <button
                 className="btn btnGhost"
                 onClick={async () => {
-                  const ok = window.confirm('This will remove all Factorio Forge instances and versions. Continue?');
-                  if (!ok) return;
-                  const res = await ipcInvoke<any>('clear-data');
-                  if (res?.error) push(res.error, 'error');
-                  else push('Data cleared.', 'success');
+                  setConfirmClearData(true);
                 }}
               >
                 Clear data
@@ -209,6 +206,35 @@ export function SettingsPage() {
           </div>
         </section>
       </div>
+
+      {confirmClearData && (
+        <div className="modalOverlay" onMouseDown={() => setConfirmClearData(false)}>
+          <div className="modal" onMouseDown={e => e.stopPropagation()}>
+            <div className="modalHeader">
+              <div className="modalTitle">Clear data</div>
+            </div>
+            <div className="modalBody">
+              <p>This will remove all Factorio Forge instances and versions. Continue?</p>
+            </div>
+            <div className="modalFooter">
+              <button className="btn btnGhost" onClick={() => setConfirmClearData(false)}>
+                Cancel
+              </button>
+              <button
+                className="btn"
+                onClick={async () => {
+                  setConfirmClearData(false);
+                  const res = await ipcInvoke<any>('clear-data');
+                  if (res?.error) push(res.error, 'error');
+                  else push('Data cleared.', 'success');
+                }}
+              >
+                Clear data
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -33,7 +33,7 @@ export function Sidebar<T extends string>({
         ))}
       </nav>
 
-      <div className="sidebarFooter">v0.1.0</div>
+      <div className="sidebarFooter">v1.0.0</div>
     </aside>
   );
 }

@@ -1,14 +1,15 @@
 {
   "name": "factorio-forge",
-  "version": "0.1.0",
-  "description": "Launcher desktop para Factorio com instâncias isoladas",
+  "version": "1.0.0",
+  "description": "The best launcher for Factorio modded",
   "main": "dist/main/index.js",
   "scripts": {
     "start": "npm run build && electron .",
     "build": "tsc && node copy-renderer-assets.js && vite build",
     "dev": "tsc -w",
     "copy-assets": "node copy-assets.js",
-    "package": "electron-builder"
+    "package": "electron-builder",
+    "publish": "electron-builder --publish always"
   },
   "author": "",
   "license": "MIT",
@@ -22,7 +23,8 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "icon": "src/renderer/images/logo.icon"
     },
     "nsis": {
       "oneClick": false,

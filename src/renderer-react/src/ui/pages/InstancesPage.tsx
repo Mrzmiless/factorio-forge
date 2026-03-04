@@ -9,6 +9,7 @@ export function InstancesPage({ onAddNew }: { onAddNew: () => void }) {
   const [instances, setInstances] = useState<Instance[] | null>(null);
   const [coverUrls, setCoverUrls] = useState<Record<string, string>>({});
   const [menuFor, setMenuFor] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   async function reload() {
     const list = await ipcInvoke<Instance[]>('list-instances');
@@ -49,11 +50,7 @@ export function InstancesPage({ onAddNew }: { onAddNew: () => void }) {
   }
 
   async function remove(name: string) {
-    if (!confirm(`Delete instance "${name}"?`)) return;
-    const res = await ipcInvoke<any>('delete-instance', name);
-    if (res?.error) push(res.error, 'error');
-    await reload();
-    push('Instance removed.', 'success');
+    setConfirmDelete(name);
   }
 
   async function exportInstance(name: string) {
@@ -160,6 +157,39 @@ export function InstancesPage({ onAddNew }: { onAddNew: () => void }) {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {confirmDelete && (
+        <div className="modalOverlay" onMouseDown={() => setConfirmDelete(null)}>
+          <div className="modal" onMouseDown={e => e.stopPropagation()}>
+            <div className="modalHeader">
+              <div className="modalTitle">Delete instance</div>
+            </div>
+            <div className="modalBody">
+              <p>Delete instance "{confirmDelete}"? This action cannot be undone.</p>
+            </div>
+            <div className="modalFooter">
+              <button className="btn btnGhost" onClick={() => setConfirmDelete(null)}>
+                Cancel
+              </button>
+              <button
+                className="btn"
+                onClick={async () => {
+                  const name = confirmDelete;
+                  setConfirmDelete(null);
+                  const res = await ipcInvoke<any>('delete-instance', name);
+                  if (res?.error) push(res.error, 'error');
+                  else {
+                    await reload();
+                    push('Instance removed.', 'success');
+                  }
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

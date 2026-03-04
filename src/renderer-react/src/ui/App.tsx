@@ -4,6 +4,7 @@ import { Sidebar } from './components/Sidebar';
 import { InstancesPage } from './pages/InstancesPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ToastHost, ToastProvider } from './components/Toast';
+import { DialogProvider } from './components/Dialog';
 import { CreateInstanceModal } from './components/CreateInstanceModal';
 import { ipcInvoke } from '../lib/ipc';
 
@@ -27,24 +28,26 @@ export function App() {
   }, [page]);
 
   return (
-    <ToastProvider>
-      <div className="appRoot">
-        <TitleBar title="Factorio Forge" />
-        <div className="shell">
-          <Sidebar items={sidebarItems} active={page} onSelect={setPage} />
-          <main className="main">
-            {page === 'instances' ? (
-              <InstancesPage onAddNew={() => setCreateOpen(true)} />
-            ) : (
-              <SettingsPage />
-            )}
-          </main>
-        </div>
-        <ToastHost />
+    <DialogProvider>
+      <ToastProvider>
+        <div className="appRoot">
+          <TitleBar title="Factorio Forge" />
+          <div className="shell">
+            <Sidebar items={sidebarItems} active={page} onSelect={setPage} />
+            <main className="main">
+              {page === 'instances' ? (
+                <InstancesPage onAddNew={() => setCreateOpen(true)} />
+              ) : (
+                <SettingsPage />
+              )}
+            </main>
+          </div>
+          <ToastHost />
 
-        <CreateInstanceModal open={createOpen} onClose={() => setCreateOpen(false)} />
-      </div>
-    </ToastProvider>
+          <CreateInstanceModal open={createOpen} onClose={() => setCreateOpen(false)} />
+        </div>
+      </ToastProvider>
+    </DialogProvider>
   );
 }
 
