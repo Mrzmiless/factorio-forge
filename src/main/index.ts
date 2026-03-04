@@ -284,8 +284,9 @@ app.whenReady().then(() => {
         return;
       }
       autoUpdater.allowPrerelease = false;
-      autoUpdater.autoDownload = true;
-      autoUpdater.autoInstallOnAppQuit = true;
+      autoUpdater.autoDownload = false;
+      autoUpdater.autoInstallOnAppQuit = false;
+      autoUpdater.allowDowngrade = true;
 
       autoUpdater.on('checking-for-update', () => setUpdaterState({ status: 'checking' }, win));
       autoUpdater.on('update-available', info =>
@@ -295,12 +296,7 @@ app.whenReady().then(() => {
       autoUpdater.on('download-progress', p => setUpdaterState({ status: 'downloading', percent: p.percent }, win));
       autoUpdater.on('update-downloaded', info => {
         setUpdaterState({ status: 'downloaded', version: (info as any)?.version || undefined }, win);
-        // install immediately without extra confirmation
-        try {
-          autoUpdater.quitAndInstall();
-        } catch (e) {
-          setUpdaterState({ status: 'error', message: String(e) }, win);
-        }
+        // User clicks "Restart & install" to apply; no auto-quit so they see "Ready to install"
       });
       autoUpdater.on('error', err => setUpdaterState({ status: 'error', message: String(err) }, win));
       autoUpdater.checkForUpdates().catch(e => {
@@ -330,12 +326,14 @@ app.whenReady().then(() => {
   });
   ipcMain.handle('updater-install', async () => {
     try {
-      autoUpdater.quitAndInstall();
+      autoUpdater.quitAndInstall(false, true);
     } catch (e) {
       setUpdaterState({ status: 'error', message: String(e) });
     }
     return { success: true };
   });
+
+  ipcMain.handle('get-app-version', () => app.getVersion());
 
   // try to locate factorio.exe in common locations (including some recursion)
   function detectFactorio(): string | undefined {

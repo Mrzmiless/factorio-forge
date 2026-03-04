@@ -541,6 +541,62 @@ textarea {
   border-color: rgba(210, 74, 74, 0.35);
 }
 
+/* Update status: plain text with bloom */
+.updateStatus {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+.updateStatus--red {
+  color: #ff6b6b;
+  text-shadow: 0 0 12px rgba(255, 107, 107, 0.7), 0 0 24px rgba(255, 107, 107, 0.4);
+}
+.updateStatus--green {
+  color: #69db7c;
+  text-shadow: 0 0 12px rgba(105, 219, 124, 0.7), 0 0 24px rgba(105, 219, 124, 0.4);
+}
+.updateStatus--yellow {
+  color: #ffd43b;
+  text-shadow: 0 0 12px rgba(255, 212, 59, 0.7), 0 0 24px rgba(255, 212, 59, 0.4);
+}
+.updateStatus--muted {
+  color: var(--muted);
+  text-shadow: none;
+}
+
+/* Update progress bar */
+.updateProgressWrap {
+  margin-top: 12px;
+  width: 100%;
+}
+.updateProgressBar {
+  height: 8px;
+  background: var(--bg2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.updateProgressBarFill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 999px;
+  transition: width 0.25s ease;
+  box-shadow: 0 0 12px rgba(229, 114, 0, 0.5);
+}
+.updateProgressBar--indeterminate .updateProgressBarFill {
+  width: 35% !important;
+  animation: updateProgressIndeterminate 1.2s ease-in-out infinite;
+}
+@keyframes updateProgressIndeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+.updateProgressLabel {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
 /* Toasts */
 .toastHost {
   position: fixed;

@@ -1,6 +1,6 @@
 {
   "name": "factorio-forge",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "The best launcher for Factorio modded",
   "main": "dist/main/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "tsc && node copy-renderer-assets.js && vite build",
     "dev": "tsc -w",
     "copy-assets": "node copy-assets.js",
-    "package": "electron-builder",
+    "package": "npm run build && electron-builder",
     "publish": "electron-builder --publish always"
   },
   "author": "",
@@ -24,12 +24,13 @@
       "target": [
         "nsis"
       ],
-      "icon": "src/renderer/images/logo.icon"
+      "icon": "src/renderer/images/logo.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true
+      "createDesktopShortcut": true,
+      "installerSidebar": "src/renderer/images/banner.png"
     },
     "publish": [
       {

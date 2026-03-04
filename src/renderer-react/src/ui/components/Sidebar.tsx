@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ipcInvoke } from '../../lib/ipc';
 
 type Icon = 'grid' | 'cog';
 
@@ -11,6 +12,12 @@ export function Sidebar<T extends string>({
   active: T;
   onSelect: (id: T) => void;
 }) {
+  const [version, setVersion] = useState<string>('');
+
+  useEffect(() => {
+    ipcInvoke<string>('get-app-version').then(v => setVersion(v ?? ''));
+  }, []);
+
   return (
     <aside className="sidebar">
       <div className="sidebarHero">
@@ -33,7 +40,7 @@ export function Sidebar<T extends string>({
         ))}
       </nav>
 
-      <div className="sidebarFooter">v1.0.0</div>
+      <div className="sidebarFooter">{version ? `v${version}` : ''}</div>
     </aside>
   );
 }

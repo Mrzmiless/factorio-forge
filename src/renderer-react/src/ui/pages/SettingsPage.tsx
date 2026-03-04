@@ -8,7 +8,19 @@ export function SettingsPage() {
   const [factorioOk, setFactorioOk] = useState<boolean | null>(null);
   const [rpcEnabled, setRpcEnabled] = useState<boolean>(false);
   const [updateState, setUpdateState] = useState<any>({ status: 'idle' });
+  const [isInstalling, setIsInstalling] = useState(false);
   const [confirmClearData, setConfirmClearData] = useState(false);
+
+  const updateStatusDisplay = useMemo(() => {
+    const s = updateState?.status || 'idle';
+    if (s === 'dev') return { text: 'Dev mode', variant: 'yellow' as const };
+    if (s === 'available' || s === 'error') return { text: s === 'available' ? 'Update available' : 'Error', variant: 'red' as const };
+    if (s === 'not-available' || s === 'downloaded') return { text: s === 'downloaded' ? 'Ready to install' : 'Up to date', variant: 'green' as const };
+    if (s === 'checking') return { text: 'Checking…', variant: 'muted' as const };
+    if (s === 'downloading') return { text: `Downloading… ${Math.round(updateState?.percent ?? 0)}%`, variant: 'muted' as const };
+    if (isInstalling) return { text: 'Installing…', variant: 'yellow' as const };
+    return { text: 'Idle', variant: 'muted' as const };
+  }, [updateState?.status, updateState?.percent, isInstalling]);
 
   async function refreshFactorio() {
     const validate = await ipcInvoke<{ path: string; exists: boolean }>('validate-factorio-path');
@@ -128,11 +140,14 @@ export function SettingsPage() {
         <section className="panel">
           <div className="panelHeader">Update</div>
           <div className="panelBody">
-            <div className="row rowSpace">
-              <span className="badge">{String(updateState?.status || 'idle')}</span>
+            <div className="row rowSpace" style={{ alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+              <span className={`updateStatus updateStatus--${updateStatusDisplay.variant}`}>
+                {updateStatusDisplay.text}
+              </span>
               <div className="row" style={{ gap: 8 }}>
                 <button
                   className="btn btnGhost"
+                  disabled={updateState?.status === 'checking' || updateState?.status === 'downloading'}
                   onClick={async () => {
                     const s = await ipcInvoke<any>('updater-check');
                     if (s) setUpdateState(s);
@@ -154,25 +169,36 @@ export function SettingsPage() {
                 {updateState?.status === 'downloaded' ? (
                   <button
                     className="btn"
+                    disabled={isInstalling}
                     onClick={async () => {
-                      await ipcInvoke<any>('updater-install');
+                      setIsInstalling(true);
+                      try {
+                        await ipcInvoke<any>('updater-install');
+                      } finally {
+                        setIsInstalling(false);
+                      }
                     }}
                   >
-                    Restart
+                    Restart & install
                   </button>
                 ) : null}
               </div>
             </div>
-            {updateState?.status === 'downloading' ? (
-              <div className="muted" style={{ marginTop: 10 }}>
-                Downloading… {Math.round(updateState?.percent || 0)}%
+            {(updateState?.status === 'downloading' || isInstalling) && (
+              <div className="updateProgressWrap">
+                <div className={`updateProgressBar ${isInstalling ? 'updateProgressBar--indeterminate' : ''}`}>
+                  <div
+                    className="updateProgressBarFill"
+                    style={isInstalling ? {} : { width: `${Math.min(100, updateState?.percent ?? 0)}%` }}
+                  />
+                </div>
               </div>
-            ) : null}
-            {updateState?.message ? (
+            )}
+            {updateState?.message && !(updateState?.status === 'downloading' || isInstalling) && (
               <div className="muted" style={{ marginTop: 10 }}>
                 {String(updateState.message)}
               </div>
-            ) : null}
+            )}
           </div>
         </section>
 
