@@ -164,14 +164,13 @@ export function CreateInstanceModal({ open, onClose }: { open: boolean; onClose:
           <div style={{ height: 16 }} />
 
           <div className="fieldLabel">Cover image (optional)</div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: 'var(--muted)' }}>
+          <label className="checkboxLabel">
             <input
               type="checkbox"
               checked={askCover}
               onChange={e => setAskCover(e.target.checked)}
-              style={{ margin: 0 }}
             />
-            Ask me to pick a cover image after creating
+            <span>Ask me to pick a cover image after creating</span>
           </label>
         </div>
         <div className="modalFooter">

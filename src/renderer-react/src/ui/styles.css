@@ -334,6 +334,7 @@ textarea {
   cursor: pointer;
   font-weight: 700;
   letter-spacing: 0.2px;
+  transition: all 180ms ease-out;
 }
 
 .btn:hover {
@@ -355,6 +356,7 @@ textarea {
 .btnGhost {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 180ms ease-out;
 }
 .btnGhost:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -516,11 +518,78 @@ textarea {
   color: #fff;
   padding: 10px 12px;
   outline: none;
+  transition: all 180ms ease-out;
 }
 
 .input:focus {
   border-color: rgba(229, 114, 0, 0.65);
   box-shadow: 0 0 0 3px rgba(229, 114, 0, 0.18);
+}
+
+/* Checkbox customizado */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: all 160ms ease-out;
+  flex-shrink: 0;
+  position: relative;
+}
+
+input[type="checkbox"]:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, rgba(229, 114, 0, 0.85) 0%, rgba(194, 92, 0, 0.85) 100%);
+  border-color: rgba(229, 114, 0, 0.9);
+  box-shadow: 0 0 0 3px rgba(229, 114, 0, 0.15), inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+input[type="checkbox"]:checked::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+input[type="checkbox"]:focus {
+  outline: none;
+  border-color: rgba(229, 114, 0, 0.65);
+  box-shadow: 0 0 0 3px rgba(229, 114, 0, 0.15);
+}
+
+/* Checkbox label */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  user-select: none;
+  animation: fieldSlideIn 300ms ease-out 180ms backwards;
+}
+
+.checkboxLabel span {
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 160ms ease-out;
+}
+
+.checkboxLabel:hover span {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .badge {
@@ -640,6 +709,7 @@ textarea {
   align-items: center;
   justify-content: center;
   z-index: 900;
+  animation: modalOverlayFade 280ms ease-out;
 }
 
 .modal {
@@ -650,6 +720,7 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: #181818;
   box-shadow: 0 18px 46px var(--shadow);
+  animation: modalFade 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modalHeader {
@@ -673,6 +744,7 @@ textarea {
   color: #fff;
   cursor: pointer;
   font-size: 20px;
+  transition: all 180ms ease-out;
 }
 
 .iconBtn:hover {
@@ -681,6 +753,7 @@ textarea {
 
 .modalBody {
   padding: 14px;
+  animation: modalBodySlide 320ms ease-out 100ms both;
 }
 
 .modalFooter {
@@ -689,12 +762,18 @@ textarea {
   gap: 10px;
   padding: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  animation: modalBodySlide 320ms ease-out 200ms both;
 }
 
 .fieldLabel {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.75);
   font-weight: 700;
+  animation: fieldSlideIn 300ms ease-out backwards;
+}
+
+.field {
+  animation: fieldSlideIn 300ms ease-out 60ms backwards;
   margin-bottom: 6px;
 }
 
@@ -708,6 +787,7 @@ textarea {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.04);
+  animation: fieldSlideIn 300ms ease-out 140ms backwards;
 }
 
 .segBtn {
@@ -717,6 +797,7 @@ textarea {
   color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
   font-weight: 750;
+  transition: all 200ms ease-out;
 }
 
 .segBtn.active {
@@ -731,6 +812,8 @@ textarea {
 }
 
 .radioCard {
+  transition: all 200ms ease-out;
+  animation: fieldSlideIn 300ms ease-out 100ms backwards;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.05);
@@ -740,6 +823,7 @@ textarea {
 
 .radioCard:hover {
   background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
 }
 
 .radioCard.active {
@@ -940,6 +1024,48 @@ textarea {
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalOverlayFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalBodySlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fieldSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
