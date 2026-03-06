@@ -1,6 +1,6 @@
 {
   "name": "factorio-forge",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The best launcher for Factorio modded",
   "main": "dist/main/index.js",
   "scripts": {
