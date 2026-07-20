@@ -91,7 +91,7 @@ docs/
 Contributions are welcome. 🚀
 
 1. Fork the repository
-2. Create a branch: `git checkout -b codex/your-feature-name`
+2. Create a branch: `git checkout -b code/your-feature-name`
 3. Commit your changes
 4. Push your branch
 5. Open a Pull Request
