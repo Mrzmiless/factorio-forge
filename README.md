@@ -43,7 +43,6 @@ No overlap, no broken saves, no modpack conflicts.
 - 🛡️ Per-instance isolation for mods and saves
 - 🗂️ Choose different game versions per instance
 - 🚀 Launch using `--config-path` for clean separation
-- 🖥️ Custom UI with sidebar, modals, and title bar controls
 
 ## How Isolation Works
 
